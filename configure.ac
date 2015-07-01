@@ -80,11 +80,7 @@ AC_HEADER_STDC
 AC_CHECK_FUNCS([vprintf vsprintf printf])
 
 # Checks for libraries.
-AC_CHECK_HEADERS([stdarg.h regex.h termcap.h])
-AC_CHECK_LIB([termcap], [getenv], [termcap=yes], [termcap=no])
-if test "${termcap}" = "no"; then
-  AC_MSG_ERROR([requirement not found : getenv in -ltermcap])
-fi
+AC_CHECK_HEADERS([stdarg.h regex.h])
 AC_CHECK_TYPE([size_t])
 
 AC_CHECK_TYPES([std::string], [], [], [[

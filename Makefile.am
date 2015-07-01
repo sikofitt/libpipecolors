@@ -9,7 +9,7 @@ libtool: $(LIBTOOL_DEPS)
 
 lib_LTLIBRARIES = libpipecolors.la
 libpipecolors_la_SOURCES = libpipecolors.cpp
-libpipecolors_la_LIBADD = -ltermcap
+#libpipecolors_la_LIBADD = -ltermcap
 libpipecolors_la_CFLAGS = -fPIC -DPIC -pthread
 libpipecolors_la_LDFLAGS = -module \
 	-release ${PIPECOLORS_VERSION}
