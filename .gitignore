@@ -14,7 +14,7 @@ Makefile
 NEWS
 pipecolors.pc
 README
-test
+tests/test
 Makefile.in
 aclocal.m4
 autom4te.cache
@@ -26,5 +26,9 @@ config.h
 config.status
 libtool
 stamp-h1
+# Ignore output files
+libpipecolors.o
+libpipecolors.so
+
 # Ignore backup files
 *~

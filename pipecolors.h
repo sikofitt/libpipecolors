@@ -11,4 +11,4 @@ void cprintf(const char* format, ...);
 #ifdef __cplusplus
 }
 #endif
-#endif
+

@@ -1,7 +1,7 @@
 pkgconfig_DATA = pipecolors.pc
 
-AM_CXXFLAGS =+ -std=c++11 -fPIC -pipe
-ACLOCAL_AMFLAGS =+ -I m4
+AM_CXXFLAGS += -std=c++11 -fPIC -pipe
+ACLOCAL_AMFLAGS = -I m4
 LIBTOOL_DEPS += @LIBTOOL_DEPS@
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status libtool
@@ -15,4 +15,5 @@ libpipecolors_so_SOURCES = libpipecolors.cpp
 libpipecolors_so_LDFLAGS = \
 	-shared \
 	-fPIC	\
-	-Wl,-soname,libpipecolors.so.0.1
+	-Wl,-soname,libpipecolors.so.0.1 \
+	-ltermcap
