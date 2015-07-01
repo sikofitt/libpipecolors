@@ -57,7 +57,8 @@ gcc_micro_vers=`echo ${gcc_full_vers} | cut -f3 -d.`
 # Checks for functions
 
 AC_CHECK_CXX_ARGUMENT([-std=c++11], [], [AC_MSG_ERROR([C++11 support is required.])])
-
+AC_SUBST([ACLOCAL_AMFLAGS])
+AC_SUBST([AM_CXXFLAGS])
 
 AC_MSG_CHECKING([if ${CXX-c++} supports nullptr])
 AC_LINK_IFELSE(

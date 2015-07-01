@@ -7,14 +7,6 @@ sites/*/files
 sites/*/private
 
 # Ignore default text files
-robots.txt
-/CHANGELOG.txt
-/COPYRIGHT.txt
-/INSTALL*.txt
-/LICENSE.txt
-/MAINTAINERS.txt
-/UPGRADE.txt
-/README.txt
 .deps
 config
 /AUTHORS
@@ -27,5 +19,12 @@ Makefile.in
 aclocal.m4
 autom4te.cache
 config.h.in
+config.log
 configure
 m4
+config.h
+config.status
+libtool
+stamp-h1
+# Ignore backup files
+*~
