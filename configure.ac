@@ -6,7 +6,7 @@ AC_PREREQ([2.69])
 m4_define([pipecolors_version_major],[0])
 m4_define([pipecolors_version_minor],[1])
 m4_define([pipecolors_version_micro],[0])
-m4_define([pipecolors_version_beta], [1])
+m4_define([pipecolors_version_beta], [b])
 
 m4_define([pipecolors_version_base], [pipecolors_version_major.pipecolors_version_minor.pipecolors_version_micro])
 m4_define([pipecolors_version],
