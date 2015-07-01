@@ -18,16 +18,15 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-
-#include <stdio.h>
+//#include <cstdio>
+//#include <stdio.h>
 #include <iostream>
 #include <stdarg.h>
 #include <stdlib.h>
-
+#include <unistd.h>
 #include <string>
 #include <map>
 #include <regex>
-#include <termcap.h>
 #include "pipecolors.h"
 
 #define C_DEFAULT      0
@@ -98,13 +97,8 @@
 }
 
 bool has_colors(void) {
-  char buffer[1024];
-  int c;
 
-  tgetent(buffer, getenv("TERM"));
-  c = tgetnum("Co");
-
-  if(c > 0 || c == -1) {
+  if( isatty(fileno(stdout)) ) {
     return true;
   } else {
     return false;
@@ -137,9 +131,4 @@ void cprintf( const char * format, ... ) {
 
   std::cout << s;
 
-}
-
-int main(void) {
-  cprintf("\n%s\n\n", "|01P|02i|03p|04e|05c|06ol|07o|08r|09s |10l|11i|12b|13r|14a|15r|14y |130|12.|111|07");
-  return 0;
 }

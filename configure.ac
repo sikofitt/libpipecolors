@@ -6,7 +6,7 @@ AC_PREREQ([2.69])
 m4_define([pipecolors_version_major],[0])
 m4_define([pipecolors_version_minor],[1])
 m4_define([pipecolors_version_micro],[0])
-m4_define([pipecolors_version_beta], [b])
+m4_define([pipecolors_version_beta], [])
 
 m4_define([pipecolors_version_base], [pipecolors_version_major.pipecolors_version_minor.pipecolors_version_micro])
 m4_define([pipecolors_version],
@@ -36,12 +36,12 @@ AC_CANONICAL_HOST
 AC_PROG_CXX
 AC_PROG_CXX_C_O
 AC_PROG_CXXCPP
+AM_PROG_AR
 AC_PROG_LIBTOOL
-LT_INIT
-AC_DISABLE_SHARED
-AC_ENABLE_STATIC
-AC_LANG_CPLUSPLUS
 
+LT_INIT
+AC_LANG_CPLUSPLUS
+AC_PREFIX_DEFAULT([/usr])
 #AC_CHECK_LIB([pipecolors], [cprintf])
 #PKG_CHECK_MODULES([LIBPIPECOLORS], [pipecolors])
 # Checks for programs.
@@ -57,8 +57,6 @@ gcc_micro_vers=`echo ${gcc_full_vers} | cut -f3 -d.`
 # Checks for functions
 
 AC_CHECK_CXX_ARGUMENT([-std=c++11], [], [AC_MSG_ERROR([C++11 support is required.])])
-AC_SUBST([ACLOCAL_AMFLAGS])
-AC_SUBST([AM_CXXFLAGS])
 
 AC_MSG_CHECKING([if ${CXX-c++} supports nullptr])
 AC_LINK_IFELSE(
@@ -95,38 +93,11 @@ AC_CHECK_TYPES([std::string], [], [], [[
   #include <iostream>
   ]])
 
-AC_ARG_WITH(arch,
-              AS_HELP_STRING([--with-arch=ARCH],
-                             [On x86_64 systems, compile with -fno-omit-frame-pointer (see INSTALL)]))
-
-if test z${with_arch} = "z"; then
-  AC_CHECK_PROG(ARCH_PROG, arch, "found", "no")
-  if test $ARCH_PROG = "no"; then
-    AC_CHECK_PROG(UNAME_PROG, uname, "found", "no")
-    if test $UNAME_PROG = "no"; then
-      AC_MSG_ERROR([Could not detect your architecture, please set --with-arch=ARCH.])
-    else
-      with_arch=`uname -i`
-    fi
-  else
-    with_arch=`arch`
-  fi
-fi
-AC_MSG_NOTICE([building for ${with_arch} platform])
-
-# Checks for header files.
-
-
-
-# Checks for typedefs, structures, and compiler characteristics.
-
-# Checks for library functions.
-
 AC_ARG_ENABLE([the-force],
 	[AC_HELP_STRING([--enable-the-force], [use the force [default=no]])],
 		[], [enable_the_force=no])
 AM_CONDITIONAL([ENABLE_THE_FORCE], [test "x$enable_the_force" = "xyes"])
 
-AC_CONFIG_FILES([Makefile pipecolors.pc:pipecolors.pc.in],[],[API_VERSION='0.1'])
+AC_CONFIG_FILES([Makefile pipecolors.pc:pipecolors.pc.in],[],[APIVERSION=PIPECOLORS_VERSION])
 AC_CONFIG_COMMANDS([default],[[]],[[]])
 AC_OUTPUT

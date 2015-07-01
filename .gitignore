@@ -29,6 +29,9 @@ stamp-h1
 # Ignore output files
 libpipecolors.o
 libpipecolors.so
+.libs/
+libpipecolors.la
+libpipecolors.lo
 
 # Ignore backup files
 *~
