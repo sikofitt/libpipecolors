@@ -80,7 +80,7 @@ AC_HEADER_STDC
 AC_CHECK_FUNCS([vprintf vsprintf printf])
 
 # Checks for libraries.
-AC_CHECK_HEADERS([stdarg.h regex.h])
+AC_CHECK_HEADERS([stdarg.h regex.h iostream map string unistd.h stdlib.h],[],[AC_MSG_ERROR[no]])
 AC_CHECK_TYPE([size_t])
 
 AC_CHECK_TYPES([std::string], [], [], [[
