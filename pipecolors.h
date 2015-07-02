@@ -4,15 +4,16 @@
 #ifndef _PIPECOLORS_H
 #define _PIPECOLORS_H
 #endif
-
+namespace pipecolors {
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void cprintf(const char* format, ...);
-void csprintf(void);
+void pcprintf(const char* fmt, ...);
+void pcsprintf(char **strp, const char *fmt, va_list ap);
 
 #ifdef __cplusplus
 }
 #endif
 
+}

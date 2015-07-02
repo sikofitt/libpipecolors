@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <pipecolors.h>
+#define printf cprintf
+
+using namespace pipecolors;
 
 int main(void) {
 
@@ -10,6 +13,6 @@ int main(void) {
     cprintf("\n%s\n\n", name);
     cprintf("%s\n", str);
     if( isatty(fileno(stdout)) ) {
-      cprintf("Awesome!");
+      printf("Awesome!");
     }
 }

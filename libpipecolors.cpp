@@ -18,8 +18,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-//#include <cstdio>
-//#include <stdio.h>
+
 #include <iostream>
 #include <stdarg.h>
 #include <stdlib.h>
@@ -29,45 +28,45 @@
 #include <regex>
 #include "pipecolors.h"
 
+namespace pipecolors {
+
 #define C_DEFAULT      0
 #define C_BOLD         1
 #define C_ITALIC       3
 #define C_UNDERLINE    4
 #define C_INVERT       7
 
-#define C_B0           "\033[1m"
-#define C_B1           "\033[0m"
+#define C_B0           "\x1b[1m"
+#define C_B1           "\x1b[0m"
 
-#define C_FG_BLACK     "\033[0;30m"
-#define C_FG_RED       "\033[0;31m"
-#define C_FG_GREEN     "\033[0;32m"
-#define C_FG_YELLOW    "\033[0;33m"
-#define C_FG_BLUE      "\033[0;34m"
-#define C_FG_MAGENTA   "\033[0;35m"
-#define C_FG_CYAN      "\033[0;36m"
-#define C_FG_GRAY      "\033[0;37m"
-#define C_FG_DEFAULT   "\033[0;39m"
+#define C_FG_BLACK     "\x1b[0;30m"
+#define C_FG_RED       "\x1b[0;31m"
+#define C_FG_GREEN     "\x1b[0;32m"
+#define C_FG_YELLOW    "\x1b[0;33m"
+#define C_FG_BLUE      "\x1b[0;34m"
+#define C_FG_MAGENTA   "\x1b[0;35m"
+#define C_FG_CYAN      "\x1b[0;36m"
+#define C_FG_GRAY      "\x1b[0;37m"
+#define C_FG_DEFAULT   "\x1b[0;39m"
 
 
-#define C_FG_GRAY_D    "\033[0;90m"
-#define C_FG_RED_L     "\033[0;91m"
-#define C_FG_GREEN_L   "\033[0;92m"
-#define C_FG_YELLOW_L  "\033[0;93m"
-#define C_FG_BLUE_L    "\033[0;94m"
-#define C_FG_MAGENTA_L "\033[0;95m"
-#define C_FG_CYAN_L    "\033[0;96m"
-#define C_FG_WHITE     "\033[0;97m"
+#define C_FG_GRAY_D    "\x1b[0;90m"
+#define C_FG_RED_L     "\x1b[0;91m"
+#define C_FG_GREEN_L   "\x1b[0;92m"
+#define C_FG_YELLOW_L  "\x1b[0;93m"
+#define C_FG_BLUE_L    "\x1b[0;94m"
+#define C_FG_MAGENTA_L "\x1b[0;95m"
+#define C_FG_CYAN_L    "\x1b[0;96m"
+#define C_FG_WHITE     "\x1b[0;97m"
 
 #define C_BG_NONE      ""
-#define C_BG_RED       "\033[1;41m"
-#define C_BG_GREEN     "\033[1;42m"
-#define C_BG_BLUE      "\033[1;44m"
-#define C_BG_DEFAULT   "\033[1;49m"
+#define C_BG_RED       "\x1b[1;41m"
+#define C_BG_GREEN     "\x1b[1;42m"
+#define C_BG_BLUE      "\x1b[1;44m"
+#define C_BG_DEFAULT   "\x1b[1;49m"
 
  std::map<std::string, std::string> getColors() {
   std::map<std::string, std::string> colors;
-  colors["|30"] = C_B0;
-  colors["|31"] = C_B1;
   colors["|00"] = C_FG_BLACK;
   colors["|01"] = C_FG_BLUE;
   colors["|02"] = C_FG_GREEN;
@@ -92,27 +91,23 @@
   colors["|21"] = C_BG_RED; // C_BG_MAGENTA
   colors["|22"] = C_FG_WHITE; //C_BG_BROWN
   colors["|23"] = C_BG_DEFAULT; // C_BG_WHITE
-
+  colors["|30"] = C_B0; //Bold OFF
+  colors["|31"] = C_B1; // Bold ON
   return colors;
 }
 
 bool has_colors(void) {
-
-  if( isatty(fileno(stdout)) ) {
-    return true;
-  } else {
-    return false;
-  }
+  return isatty(fileno(stdout));
 }
 
-void cprintf( const char * format, ... ) {
+void pcprintf( const char * fmt, ... ) {
 
   char buffer[256];
   std::map<std::string, std::string> colors;
 
   va_list args;
-  va_start(args, format);
-  vsprintf(buffer, format, args);
+  va_start(args, fmt);
+  vasprintf(buffer, fmt, args);
   std::string text(buffer), s(buffer);
   va_end(args);
   std::size_t index;
@@ -131,4 +126,5 @@ void cprintf( const char * format, ... ) {
 
   std::cout << s;
 
+}
 }
