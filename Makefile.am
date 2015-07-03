@@ -1,8 +1,3 @@
-man-hook:
-	gzip $(mandir)/man7/libpipecolors.7
-	gzip $(mandir)/man3/pcprintf.3
-
-
 pkgconfig_DATA = libpipecolors.pc
 AM_CXXFLAGS =  -std=c++11
 ACLOCAL_AMFLAGS = -I m4 -I config
@@ -13,7 +8,7 @@ libtool: $(LIBTOOL_DEPS)
 
 lib_LTLIBRARIES = libpipecolors.la
 libpipecolors_la_SOURCES = libpipecolors.cpp
-#libpipecolors_la_LIBADD = -ltermcap
+libpipecolors_la_LIBADD = -lboost_regex
 libpipecolors_la_CFLAGS = -fPIC -DPIC -pthread
 libpipecolors_la_LDFLAGS = -module \
 	-release ${PIPECOLORS_VERSION}
@@ -35,3 +30,4 @@ MAINTAINERCLEANFILES = \
 	-rf config \
 	-rf m4 \
 	configure \
+	Makefile.in

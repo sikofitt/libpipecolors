@@ -2,9 +2,6 @@
 sites/*/*settings*.php
 
 # Ignore paths that contain generated content.
-files/
-sites/*/files
-sites/*/private
 
 # Ignore default text files
 .deps
@@ -32,6 +29,8 @@ libpipecolors.so
 .libs/
 libpipecolors.la
 libpipecolors.lo
-
+libpipecolors.pc
+test/
+timestamp
 # Ignore backup files
 *~

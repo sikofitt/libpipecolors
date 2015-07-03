@@ -10,8 +10,8 @@ namespace pipecolors {
 extern "C" {
 #endif
 
-void pcprintf(const char* fmt, ...);
-void pcsprintf(char **strp, const char *fmt, va_list ap);
+int pcprintf( const char * format, ... );
+//int pcsprintf(char **strp, const char *fmt, va_list ap);
 
 #ifdef __cplusplus
 }

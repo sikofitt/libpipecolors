@@ -41,7 +41,6 @@ AC_PROG_LIBTOOL
 AC_PROG_LN_S
 
 LT_INIT
-
 AC_LANG_CPLUSPLUS
 AC_PREFIX_DEFAULT([/usr])
 #AC_CHECK_LIB([pipecolors], [cprintf])
@@ -66,11 +65,12 @@ if test "${gcc_minor_vers}" -lt 9; then
 else
   AC_MSG_RESULT([${gcc_full_vers} ... acceptable])
 fi
-AC_HEADER_STDC
-AC_CHECK_FUNCS([vprintf vsprintf vasprintf printf])
+#AC_HEADER_STDC
+
 
 # Checks for libraries.
-AC_CHECK_HEADERS([stdarg.h regex.h iostream map string unistd.h stdlib.h],[],[AC_MSG_ERROR[no]])
+AC_CHECK_HEADERS([stdarg.h stdlib.h unistd.h string iostream map boost/regex.hpp],[],[AC_MSG_ERROR([We couldn't find some of the headers.])])
+AC_CHECK_FUNCS([vprintf vsprintf vasprintf printf])
 AC_CHECK_TYPE([size_t])
 
 AC_CHECK_TYPES([std::string], [], [], [[
@@ -84,5 +84,5 @@ AC_ARG_ENABLE([the-force],
 AM_CONDITIONAL([ENABLE_THE_FORCE], [test "x$enable_the_force" = "xyes"])
 
 AC_CONFIG_FILES([Makefile libpipecolors.pc:libpipecolors.pc.in],[],[APIVERSION=PIPECOLORS_VERSION])
-AC_CONFIG_COMMANDS([default],[[]],[[]])
+AC_CONFIG_COMMANDS([timestamp], [date >timestamp])
 AC_OUTPUT
