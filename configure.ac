@@ -29,23 +29,25 @@ AC_CONFIG_SRCDIR([libpipecolors.cpp])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([config])
 
-AM_INIT_AUTOMAKE([-Wall -Werror])
-
+AM_INIT_AUTOMAKE([gnu dist-bzip2 dist-zip std-options])
+AM_SILENT_RULES
 AC_GNU_SOURCE
 AC_CANONICAL_HOST
-AC_PROG_CXX
-AC_PROG_CXX_C_O
+AC_PROG_INSTALL
+AC_PROG_MAKE_SET
 AC_PROG_CXXCPP
 AM_PROG_AR
 AC_PROG_LIBTOOL
+AC_PROG_LN_S
 
 LT_INIT
+
 AC_LANG_CPLUSPLUS
 AC_PREFIX_DEFAULT([/usr])
 #AC_CHECK_LIB([pipecolors], [cprintf])
-#PKG_CHECK_MODULES([LIBPIPECOLORS], [pipecolors])
+
 # Checks for programs.
-AM_CONDITIONAL(CXX, test "$CXX" = yes)   # let the Makefile know if we're gcc
+
 AC_CONFIG_MACRO_DIR([m4])
 AC_SUBST([LIBTOOL_DEPS])
 
@@ -58,18 +60,6 @@ gcc_micro_vers=`echo ${gcc_full_vers} | cut -f3 -d.`
 
 AC_CHECK_CXX_ARGUMENT([-std=c++11], [], [AC_MSG_ERROR([C++11 support is required.])])
 
-AC_MSG_CHECKING([if ${CXX-c++} supports nullptr])
-AC_LINK_IFELSE(
-  [AC_LANG_PROGRAM(
-    [],
-    [[
-      char *char_null = nullptr;
-    ]])],
-  [AC_MSG_RESULT(yes)
-   AC_DEFINE(HAVE_NULLPTR, 1,
-     [Define to 1 if the compiler supports the nullptr C++11 constant])],
-  [AC_MSG_RESULT(no)])
-
 AC_MSG_CHECKING([${CXX-c++} version])
 if test "${gcc_minor_vers}" -lt 9; then
   AC_MSG_ERROR([GCC >= 4.9 is required, you have version ${gcc_full_vers}])
@@ -77,16 +67,15 @@ else
   AC_MSG_RESULT([${gcc_full_vers} ... acceptable])
 fi
 AC_HEADER_STDC
-AC_CHECK_FUNCS([vprintf vsprintf printf])
+AC_CHECK_FUNCS([vprintf vsprintf vasprintf printf])
 
 # Checks for libraries.
 AC_CHECK_HEADERS([stdarg.h regex.h iostream map string unistd.h stdlib.h],[],[AC_MSG_ERROR[no]])
 AC_CHECK_TYPE([size_t])
 
 AC_CHECK_TYPES([std::string], [], [], [[
-  #include <stdio.h>
-  #include <string>
   #include <iostream>
+	#include <string>
   ]])
 
 AC_ARG_ENABLE([the-force],
@@ -94,6 +83,6 @@ AC_ARG_ENABLE([the-force],
 		[], [enable_the_force=no])
 AM_CONDITIONAL([ENABLE_THE_FORCE], [test "x$enable_the_force" = "xyes"])
 
-AC_CONFIG_FILES([Makefile pipecolors.pc:pipecolors.pc.in],[],[APIVERSION=PIPECOLORS_VERSION])
+AC_CONFIG_FILES([Makefile libpipecolors.pc:libpipecolors.pc.in],[],[APIVERSION=PIPECOLORS_VERSION])
 AC_CONFIG_COMMANDS([default],[[]],[[]])
 AC_OUTPUT

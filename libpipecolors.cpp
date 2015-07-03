@@ -26,7 +26,7 @@
 #include <string>
 #include <map>
 #include <regex>
-#include "pipecolors.h"
+//#include "libpipecolors.h"
 
 namespace pipecolors {
 
@@ -102,17 +102,23 @@ bool has_colors(void) {
 
 void pcprintf( const char * fmt, ... ) {
 
-  char buffer[256];
+  char *buffer;
   std::map<std::string, std::string> colors;
+  std::size_t index;
+  std::smatch matches;
 
   va_list args;
   va_start(args, fmt);
-  vasprintf(buffer, fmt, args);
+
+  if(int size = vasprintf(&buffer, fmt, args) == -1) {
+      free(buffer);
+      exit(EXIT_FAILURE);
+  }
+
   std::string text(buffer), s(buffer);
   va_end(args);
-  std::size_t index;
+  free(buffer);
 
-  std::smatch matches;
   std::regex reg ("(\\|\\d\\d)", std::regex_constants::ECMAScript | std::regex_constants::nosubs);
 
   colors = getColors();
