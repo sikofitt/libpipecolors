@@ -1,5 +1,5 @@
 pkgconfig_DATA = libpipecolors.pc
-AM_CXXFLAGS =  -std=c++11
+
 ACLOCAL_AMFLAGS = -I m4 -I config
 LIBTOOL_DEPS = @LIBTOOL_DEPS@
 
@@ -8,7 +8,7 @@ libtool: $(LIBTOOL_DEPS)
 
 lib_LTLIBRARIES = libpipecolors.la
 libpipecolors_la_SOURCES = libpipecolors.cpp
-libpipecolors_la_LIBADD = -lboost_regex
+libpipecolors_la_LIBS = -lboost_regex
 libpipecolors_la_CFLAGS = -fPIC -DPIC -pthread
 libpipecolors_la_LDFLAGS = -module \
 	-release ${PIPECOLORS_VERSION}

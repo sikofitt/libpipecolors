@@ -31,47 +31,18 @@
 .\" 2000-07-26 jsm28@hermes.cam.ac.uk - three small fixes
 .\" 2000-10-16 jsm28@hermes.cam.ac.uk - more fixes
 .\"
-.TH PRINTF 3  2014-07-08 "GNU" "Linux Programmer's Manual"
+.TH CPPRINTF 3  2015-07-01 "GNU" "Linux Programmer's Manual"
 .SH NAME
-printf, fprintf, sprintf, snprintf, vprintf, vfprintf, vsprintf,
-vsnprintf \- formatted output conversion
+cpprintf,
+cpsprintf \- formatted output conversion
 .SH SYNOPSIS
-.B #include <stdio.h>
+.B #include <pipecolors.h>
 .sp
-.BI "int printf(const char *" format ", ...);"
+.BI "int cpprintf(const char *" format ", ...);"
 .br
-.BI "int fprintf(FILE *" stream ", const char *" format ", ...);"
-.br
-.BI "int sprintf(char *" str ", const char *" format ", ...);"
-.br
-.BI "int snprintf(char *" str ", size_t " size ", const char *" format ", ...);"
-.sp
-.B #include <stdarg.h>
-.sp
-.BI "int vprintf(const char *" format ", va_list " ap );
-.br
-.BI "int vfprintf(FILE *" stream ", const char *" format ", va_list " ap );
-.br
-.BI "int vsprintf(char *" str ", const char *" format ", va_list " ap );
-.br
-.BI "int vsnprintf(char *" str ", size_t " size ", const char *" format \
-", va_list " ap );
+.BI "int cpsprintf(char *" str ", const char *" format ", ...);"
 .sp
 .in -4n
-Feature Test Macro Requirements for glibc (see
-.BR feature_test_macros (7)):
-.in
-.sp
-.ad l
-.BR snprintf (),
-.BR vsnprintf ():
-.RS 4
-_BSD_SOURCE || _XOPEN_SOURCE\ >=\ 500 || _ISOC99_SOURCE ||
-_POSIX_C_SOURCE\ >=\ 200112L;
-.br
-or
-.I "cc -std=c99"
-.RE
 .ad
 .SH DESCRIPTION
 The functions in the
