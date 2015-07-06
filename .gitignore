@@ -30,6 +30,7 @@ libpipecolors.so
 libpipecolors.la
 libpipecolors.lo
 libpipecolors.pc
+tests/
 test/
 timestamp
 # Ignore backup files

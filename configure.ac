@@ -34,7 +34,6 @@ AM_SILENT_RULES
 AC_GNU_SOURCE
 AC_CANONICAL_HOST
 AC_PROG_INSTALL
-AC_PROG_MAKE_SET
 AC_PROG_CXXCPP
 AM_PROG_AR
 AC_PROG_LIBTOOL
@@ -43,8 +42,7 @@ AC_PROG_LN_S
 LT_INIT
 AC_LANG_CPLUSPLUS
 AC_PREFIX_DEFAULT([/usr])
-#AC_CHECK_LIB([pipecolors], [cprintf])
-AC_CHECK_LIB([boost_regex], [main])
+
 # Checks for programs.
 
 AC_CONFIG_MACRO_DIR([m4])
@@ -55,9 +53,6 @@ gcc_major_vers=`echo ${gcc_full_vers} | cut -f1 -d.`
 gcc_minor_vers=`echo ${gcc_full_vers} | cut -f2 -d.`
 gcc_micro_vers=`echo ${gcc_full_vers} | cut -f3 -d.`
 
-# Checks for functions
-
-#AC_CHECK_CXX_ARGUMENT([-std=c++11], [], [AC_MSG_ERROR([C++11 support is required.])])
 
 AC_MSG_CHECKING([${CXX-c++} version])
 if test "${gcc_minor_vers}" -lt 9; then
@@ -65,13 +60,11 @@ if test "${gcc_minor_vers}" -lt 9; then
 else
   AC_MSG_RESULT([${gcc_full_vers} ... acceptable])
 fi
-#AC_HEADER_STDC
 
-
-# Checks for libraries.
-AC_CHECK_HEADERS([stdarg.h stdlib.h unistd.h string iostream map],[],[AC_MSG_ERROR([We couldn't find some of the headers.])])
+AC_CHECK_HEADERS([stdarg.h stdlib.h unistd.h string iostream map],[],[AC_MSG_ERROR([We couldn't find one or more of the required headers.])])
 AC_CHECK_HEADER([boost/regex.hpp],[],[AC_MSG_ERROR([Please install the libboost-regex header library.])])
-AC_CHECK_FUNCS([vprintf vsprintf vasprintf printf])
+AC_CHECK_LIB([boost_regex], [main])
+AC_CHECK_FUNCS([vasprintf])
 AC_CHECK_TYPE([size_t])
 
 AC_CHECK_TYPES([std::string], [], [], [[

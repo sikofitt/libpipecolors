@@ -26,8 +26,6 @@
 #include <boost/regex.hpp>
 #include "pipecolors.h"
 
-using namespace boost;
-
 namespace pipecolors {
 
   std::map<std::string, std::string> colors;
@@ -67,12 +65,50 @@ namespace pipecolors {
     return isatty(fileno(stdout));
   }
 
+  std::string replace_colors( std::string s) {
+
+    using namespace boost;
+
+    std::size_t index;
+
+    regex re( "(\\|\\d\\d)" );
+    match_results<std::string::const_iterator> match;
+    match_flag_type flags = boost::match_default;
+
+    std::string::const_iterator start, end;
+    start = s.begin();
+    end = s.end();
+
+    colors = getColors();
+
+    while(regex_search(start, end, match, re, flags))
+    {
+      if(colors[match[0]].empty()) continue;
+
+
+        //while ((index = s.find(match[0])) != std::string::npos)
+        //{
+          if(has_colors()) {
+            s.replace(s.find(match[0]), match[0].length(), colors[match[0]]);
+          } else {
+            s.erase(s.find(match[0]), match[0].length());
+          }
+        //}
+
+      start = match[0].second;
+      // update flags:
+      flags |= boost::match_prev_avail;
+      flags |= boost::match_not_bob;
+    }
+    return(s);
+  }
+
   int pcprintf( const char * fmt, ...)
   {
     char * buffer;
     va_list args;
     int ret;
-    colors = getColors();
+
     va_start(args, fmt);
     ret = vasprintf(&buffer, fmt, args);
     va_end(args);
@@ -81,32 +117,12 @@ namespace pipecolors {
         exit(EXIT_FAILURE);
     }
 
-
-    std::string s(buffer), result(buffer);
+    std::string s(buffer);
     free(buffer);
-    regex re( "(\\|\\d\\d)" );
-    std::size_t index;
-    std::string::const_iterator start, end;
-    start = s.begin();
-    end = s.end();
-    match_results<std::string::const_iterator> match;
-    match_flag_type flags = boost::match_default;
-    while(regex_search(start, end, match, re, flags))
-    {
-      while ((index = s.find(match[0])) != std::string::npos)
-      {
-        s.replace(index, match[0].length(), colors[match[0]]);
-      }
-      start = match[0].second;
-      // update flags:
-      flags |= boost::match_prev_avail;
-      flags |= boost::match_not_bob;
-    }
 
-    std::cout << s;
+    std::cout << replace_colors(s);
 
     return(ret);
 
   }
-
 } // namespace
