@@ -83,14 +83,16 @@ namespace pipecolors {
 
     while(regex_search(start, end, match, re, flags))
     {
-      if(colors[match[0]].empty()) continue;
+
 
 
         //while ((index = s.find(match[0])) != std::string::npos)
         //{
-          if(has_colors()) {
+          if(has_colors() && !colors[match[0]].empty()) {
+            //if(colors[match[0]].empty()) continue;
             s.replace(s.find(match[0]), match[0].length(), colors[match[0]]);
           } else {
+            //if(colors[match[0]].empty()) continue;
             s.erase(s.find(match[0]), match[0].length());
           }
         //}
