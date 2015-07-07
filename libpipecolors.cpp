@@ -18,6 +18,11 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
+
+#ifndef PC_REMOVE_INVALID
+#define PC_REMOVE_INVALID false
+#endif
+
 #include <cstdio>
 #include <iostream>
 #include <string>
@@ -69,8 +74,6 @@ namespace pipecolors {
 
     using namespace boost;
 
-    std::size_t index;
-
     regex re( "(\\|\\d\\d)" );
     match_results<std::string::const_iterator> match;
     match_flag_type flags = boost::match_default;
@@ -83,24 +86,17 @@ namespace pipecolors {
 
     while(regex_search(start, end, match, re, flags))
     {
+      if(colors[match[0]].empty() && PC_REMOVE_INVALID == false) goto skip;
 
+      if(has_colors() && !colors[match[0]].empty()) {
+        s.replace(s.find(match[0]), match[0].length(), colors[match[0]]);
+      } else {
+        s.erase(s.find(match[0]), match[0].length());
+      }
 
-
-        //while ((index = s.find(match[0])) != std::string::npos)
-        //{
-          if(has_colors() && !colors[match[0]].empty()) {
-            //if(colors[match[0]].empty()) continue;
-            s.replace(s.find(match[0]), match[0].length(), colors[match[0]]);
-          } else {
-            //if(colors[match[0]].empty()) continue;
-            s.erase(s.find(match[0]), match[0].length());
-          }
-        //}
-
+      skip:;
       start = match[0].second;
-      // update flags:
-      flags |= boost::match_prev_avail;
-      flags |= boost::match_not_bob;
+      flags |= boost::match_prev_avail | boost::match_not_bob;
     }
     return(s);
   }

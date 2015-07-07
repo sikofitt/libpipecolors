@@ -1,19 +1,25 @@
 pkgconfig_DATA = libpipecolors.pc
 
+AM_LDFLAGS = $(LDFLAGS)
+
 ACLOCAL_AMFLAGS = -I m4 -I config
 LIBTOOL_DEPS = @LIBTOOL_DEPS@
-
-libtool: $(LIBTOOL_DEPS)
-	$(SHELL) ./config.status libtool
 
 lib_LTLIBRARIES = libpipecolors.la
 libpipecolors_la_SOURCES = libpipecolors.cpp
 libpipecolors_la_LIBS = -lboost_regex
 libpipecolors_la_CFLAGS = -fPIC -DPIC -pthread
+
+if PC_REMOVE_INVALID
+AM_CPPFLAGS = -DPC_REMOVE_INVALID
+endif
+
+
 libpipecolors_la_LDFLAGS = -module \
 	-release ${PIPECOLORS_VERSION}
 
 include_HEADERS = pipecolors.h
+noinst_HEADERS = config.h
 
 man_MANS = libpipecolors.7 pcprintf.3
 
@@ -44,3 +50,6 @@ uninstall-man-gzip:
 	test -f $(mandir)/man3/pcprintf.3.gz && rm -f /usr/share/man/man3/pcprintf.3.gz
 	test -h $(mandir)/man3/pcsprintf.3.gz && rm -f /usr/share/man/man3/pcsprintf.3.gz
 	test -f $(mandir)/man7/libpipecolors.7.gz && rm -f /usr/share/man/man7/libpipecolors.7.gz
+
+libtool: $(LIBTOOL_DEPS)
+	$(SHELL) ./config.status libtool

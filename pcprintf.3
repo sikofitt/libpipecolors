@@ -30,6 +30,8 @@ pcsprintf \- convert pipecode (|10) to ansi colors
 .SH SYNOPSIS
 .B #include <pipecolors.h>
 .sp
+.B using namespace pipecolors;
+.sp
 .BI "int pcprintf(const char *" format ", ...);"
 .br
 .BI "int pcsprintf(char *" str ", const char *" format ", ...);"
@@ -117,6 +119,7 @@ This would print \fBMy Number is\fR in dark green and \fI5\fR in light green.
 The final code \fB|39\fR resets to the default color.
 .fi
 .SH SEE ALSO
+.BR libpipecolors (7),
 .BR printf (3),
 .BR sprintf (3),
 .BR vprintf (3),
