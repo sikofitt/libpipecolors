@@ -56,12 +56,12 @@ gcc_minor_vers=`echo ${gcc_full_vers} | cut -f2 -d.`
 gcc_micro_vers=`echo ${gcc_full_vers} | cut -f3 -d.`
 
 
-AC_MSG_CHECKING([${CXX-c++} version])
-if test "${gcc_minor_vers}" -lt 9; then
-  AC_MSG_ERROR([GCC >= 4.9 is required, you have version ${gcc_full_vers}])
-else
-  AC_MSG_RESULT([${gcc_full_vers} ... acceptable])
-fi
+#AC_MSG_CHECKING([${CXX-c++} version])
+#if test "${gcc_minor_vers}" -lt 9; then
+#  AC_MSG_ERROR([GCC >= 4.9 is required, you have version ${gcc_full_vers}])
+#else
+#  AC_MSG_RESULT([${gcc_full_vers} ... acceptable])
+#fi
 AC_CHECK_FUNCS([vasprintf], [], [AC_MSG_ERROR([Why don't you have this?  Install basic c++ header files.])])
 AC_CHECK_HEADERS([stdarg.h stdlib.h unistd.h string iostream map],[],[AC_MSG_ERROR([We couldn't find one or more of the required headers.])])
 AC_CHECK_HEADER([boost/regex.hpp],[],[AC_MSG_ERROR([Please install the libboost-regex header library.])])
