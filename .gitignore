@@ -35,3 +35,4 @@ test/
 timestamp
 # Ignore backup files
 *~
+libpipecolors.h
