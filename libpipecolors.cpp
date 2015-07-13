@@ -70,7 +70,7 @@ namespace pipecolors {
     return isatty(fileno(stdout));
   }
 
-  std::string replace_colors( std::string s) {
+  std::pair<std::string,int> replace_colors( std::string s) {
 
     using namespace boost;
 
@@ -81,12 +81,16 @@ namespace pipecolors {
     std::string::const_iterator start, end;
     start = s.begin();
     end = s.end();
+    std::string len(s);
 
     colors = getColors();
 
     while(regex_search(start, end, match, re, flags))
     {
+
       if(colors[match[0]].empty() && PC_REMOVE_INVALID == false) goto skip;
+
+        len.erase(len.find(match[0]), match[0].length());
 
       if(has_colors() && !colors[match[0]].empty()) {
         s.replace(s.find(match[0]), match[0].length(), colors[match[0]]);
@@ -98,7 +102,8 @@ namespace pipecolors {
       start = match[0].second;
       flags |= boost::match_prev_avail | boost::match_not_bob;
     }
-    return(s);
+    return std::make_pair(s, len.length());
+
   }
 
   int pcprintf( const char * fmt, ...)
@@ -118,9 +123,10 @@ namespace pipecolors {
     std::string s(buffer);
     free(buffer);
 
-    std::cout << replace_colors(s);
+    std::pair<std::string, int> result = replace_colors(s);
+    std::cout << result.first;
 
-    return(ret);
+    return(result.second);
 
   }
 } // namespace
