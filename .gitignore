@@ -36,3 +36,4 @@ timestamp
 # Ignore backup files
 *~
 libpipecolors.h
+cpp-btree/

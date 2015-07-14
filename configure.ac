@@ -77,11 +77,47 @@ AC_ARG_ENABLE([pipe-stripping],
   [AC_HELP_STRING([--disable-pipe-stripping], [strip invalid pipe codes [default=no]])],
     [], [disable_pipe_stripping=no])
   AM_CONDITIONAL([PC_REMOVE_INVALID], [test "x$disable_pipe_stripping" = "xno"])
+
 AM_COND_IF([PC_REMOVE_INVALID],
-  [AC_MSG_NOTICE([Invalid pipe codes will be filtered.
-  e.g. (|41Hello will show as Hello World instead of |41Hello World)])],
-  [AC_MSG_NOTICE([Invalid pipe codes will not be filtered.
-  e.g. (|41Hello will show |41Hello World instead of Hello World)])])
+  [AC_MSG_NOTICE([Invalid pipe codes will be filtered.])],
+  [AC_MSG_NOTICE([Invalid pipe codes will not be filtered.])])
+
+AC_ARG_ENABLE([btree],
+	[AC_HELP_STRING([--enable-btree], [enable googles btree instead of stl map [default=no]])],
+		[enable_btree=yes])
+AM_CONDITIONAL([BUILD_WITH_BTREE], [test "x$enable_btree" = "xyes"])
+
+if test "x$enable_btree" == "xyes"; then
+
+  AC_CHECK_TOOL([MERCURIAL], [hg], [no])
+
+  AM_CONDITIONAL([HAVE_HG_BIN], [test "x${MERCURIAL}" = "xhg"])
+
+  AC_MSG_CHECKING([for ${srcdir}/cpp-btree/btree.h])
+
+  AM_CONDITIONAL([HAVE_BTREE_H], [test -f ${srcdir}/cpp-btree/btree.h])
+
+  AM_COND_IF([HAVE_BTREE_H],
+  [AC_MSG_RESULT([found])
+  have_btree_h=1],
+   [AC_MSG_RESULT([no])])
+
+  if test x$have_btree_h = x1 && ! test ${HAVE_HG_BIN}; then
+    AC_VERBOSE([Using already existing btree.])
+    AM_CONDITIONAL([BUILD_WITH_BTREE], [true])
+  elif ${HAVE_HG_BIN} && test x$have_btree_h != x1; then
+    AC_VERBOSE([Downloading btree headers with mercurial])
+    $(which hg) clone https://code.google.com/p/cpp-btree/
+  else
+    AC_VERBOSE([
+    * Could not find hg in $PATH
+    * Building with STL maps instead of Google Btree
+    ])
+    AM_CONDITIONAL([BUILD_WITH_BTREE], [false])
+  fi
+
+fi
+
 AC_ARG_ENABLE([the-force],
 	[AC_HELP_STRING([--enable-the-force], [use the force [default=no]])],
 		[], [enable_the_force=no])

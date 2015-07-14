@@ -25,18 +25,19 @@
 
 #include <cstdio>
 #include <iostream>
-#include <string>
-#include <stdarg.h>
+#include <cstring>
+#include <cstdarg>
 #include <map>
 #include <boost/regex.hpp>
 #include "pipecolors.h"
 
 namespace pipecolors {
 
-  std::map<std::string, std::string> colors;
+  //typedef btree::btree_map<std::string, std::string> colors;
+  typedef std::map<std::string, std::string> colorMap;
 
-   std::map<std::string, std::string> getColors() {
-    std::map<std::string, std::string> colors;
+   colorMap getColors() {
+    colorMap colors;
     colors["|00"] = "\x1b[0;30m"; // FG_BLACK;
     colors["|01"] = "\x1b[0;34m"; // FG_BLUE;
     colors["|02"] = "\x1b[0;32m"; // FG_GREEN;
@@ -66,6 +67,7 @@ namespace pipecolors {
     colors["|39"] = "\x1b[0;39m"; // FG_DEFAULT
     return colors;
   }
+
   bool has_colors(void) {
     return isatty(fileno(stdout));
   }
@@ -83,7 +85,7 @@ namespace pipecolors {
     end = s.end();
     std::string len(s);
 
-    colors = getColors();
+    colorMap colors = getColors();
 
     while(regex_search(start, end, match, re, flags))
     {
@@ -112,6 +114,7 @@ namespace pipecolors {
     char * buffer;
     va_list args;
     int ret;
+    std::pair<std::string, int> result;
 
     va_start(args, format);
     ret = vasprintf(&buffer, format, args);
@@ -124,8 +127,9 @@ namespace pipecolors {
     std::string s(buffer);
     free(buffer);
 
-    std::pair<std::string, int> result = replace_colors(s);
-    std::cout << result.first;
+     result = replace_colors(s);
+
+    printf("%s", result.first.c_str());
 
     return(result.second);
 
