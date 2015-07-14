@@ -82,7 +82,7 @@ namespace pipecolors {
     start = s.begin();
     end = s.end();
     std::string len(s);
-
+    int reallen;
     colors = getColors();
 
     while(regex_search(start, end, match, re, flags))
@@ -102,7 +102,8 @@ namespace pipecolors {
       start = match[0].second;
       flags |= boost::match_prev_avail | boost::match_not_bob;
     }
-    return std::make_pair(s, len.length());
+
+    return std::make_pair(s, len.find("\n") ? len.length() - 1 : len.length());
 
   }
 
@@ -128,5 +129,8 @@ namespace pipecolors {
 
     return(result.second);
 
+  }
+  int pcsprintf(char **strp, const char *fmt, va_list ap) {
+    return true;
   }
 } // namespace
