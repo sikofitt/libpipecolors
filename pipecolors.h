@@ -11,7 +11,7 @@ extern "C" {
 #endif
 
 int pcprintf( const char * format, ... );
-int pcsprintf( char * str, const char * fmt, ... );
+int pcsprintf( char * str, const char * format, ... );
 
 #ifdef __cplusplus
 }

@@ -104,17 +104,17 @@ namespace pipecolors {
     }
 
     return std::make_pair(s, len.length());
-    
+
   }
 
-  int pcprintf( const char * fmt, ...)
+  int pcprintf( const char * format, ...)
   {
     char * buffer;
     va_list args;
     int ret;
 
-    va_start(args, fmt);
-    ret = vasprintf(&buffer, fmt, args);
+    va_start(args, format);
+    ret = vasprintf(&buffer, format, args);
     va_end(args);
     if(ret == -1) {
         free(buffer);
@@ -130,24 +130,29 @@ namespace pipecolors {
     return(result.second);
 
   }
-  int pcsprintf( char * str, const char * fmt, ... ) {
+
+
+  int pcsprintf( char * str, const char * format, ... ) {
+
     int ret;
-    
+    std::cout << sizeof(str);
+    char** str1 = (char**)str;
     va_list args;
-    va_start(args, fmt);
-    ret = vasprintf(&str, fmt, args);
-    
+
+    va_start(args, format);
+    ret = vasprintf(str1, format, args);
+    va_end(args);
+
     if(ret == -1) {
-        free(str);
+        free(str1);
         exit(EXIT_FAILURE);
     }
 
-    std::string s(str);
-    //free(buffer);
-
-    //std::pair<std::string, int> result = replace_colors(s);
-    //char* buffer = result.first;
-    
-    return s.length();
+    std::string s(*str1);
+    free(*str1);
+    std::pair<std::string, int> result = replace_colors(s);
+    const char * s2 = (const char *)result.first.c_str();
+    strcpy(str, s2);
+    return result.second;
   }
 } // namespace
