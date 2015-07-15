@@ -89,7 +89,9 @@ namespace pipecolors {
     end = s.end();
     std::string len(s);
 
+
     colorMap colors = getColors();
+
 
     while(regex_search(start, end, match, re, flags))
     {
