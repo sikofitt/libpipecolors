@@ -91,26 +91,33 @@ if test "x$enable_btree" == "xyes"; then
 
   AC_CHECK_TOOL([MERCURIAL], [hg], [no])
 
-  AM_CONDITIONAL([HAVE_HG_BIN], [test "x${MERCURIAL}" = "xhg"])
+  
+  if test "x${MERCURIAL}" = "xhg"; then
+    have_hg_bin=1
+  fi
+  
+  AC_MSG_CHECKING([for ${srcdir}/cpp-btree/btree_map.h])
 
-  AC_MSG_CHECKING([for ${srcdir}/cpp-btree/btree.h])
+  if test -f ${srcdir}/cpp-btree/btree_map.h; then
+    have_btree_h=1
+    AC_MSG_RESULT([found.])
+  else
+    AC_MSG_RESULT([no])
+  fi
 
-  AM_CONDITIONAL([HAVE_BTREE_H], [test -f ${srcdir}/cpp-btree/btree.h])
-
-  AM_COND_IF([HAVE_BTREE_H],
-  [AC_MSG_RESULT([found])
-  have_btree_h=1],
-   [AC_MSG_RESULT([no])])
-
-  if test x$have_btree_h = x1 && ! test ${HAVE_HG_BIN}; then
+  if test "x$have_btree_h" = "x1"; then
     AC_VERBOSE([Using already existing btree.])
     AM_CONDITIONAL([BUILD_WITH_BTREE], [true])
-  elif ${HAVE_HG_BIN} && test x$have_btree_h != x1; then
-    AC_VERBOSE([Downloading btree headers with mercurial])
+  elif test "x$have_hg_bin" = "x1"; then
+    AC_VERBOSE([
+    * Downloading btree headers with mercurial
+    ])
+    
     $(which hg) clone https://code.google.com/p/cpp-btree/
+    AM_CONDITIONAL([BUILD_WITH_BTREE], [true])
   else
     AC_VERBOSE([
-    * Could not find hg in $PATH
+    * Could not find hg in your PATH
     * Building with STL maps instead of Google Btree
     ])
     AM_CONDITIONAL([BUILD_WITH_BTREE], [false])

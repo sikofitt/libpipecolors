@@ -27,14 +27,18 @@
 #include <iostream>
 #include <cstring>
 #include <cstdarg>
-#include <map>
 #include <boost/regex.hpp>
 #include "pipecolors.h"
 
 namespace pipecolors {
 
-  //typedef btree::btree_map<std::string, std::string> colors;
+#ifndef BUILD_WITH_BTREE
+#include <map>
   typedef std::map<std::string, std::string> colorMap;
+#else
+#include "cpp-btree/btree_map.h"
+    typedef btree::btree_map<std::string, std::string> colorMap;
+#endif
 
    colorMap getColors() {
     colorMap colors;
