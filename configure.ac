@@ -5,7 +5,7 @@ AC_PREREQ([2.69])
 
 m4_define([pipecolors_version_major],[0])
 m4_define([pipecolors_version_minor],[2])
-m4_define([pipecolors_version_micro],[0])
+m4_define([pipecolors_version_micro],[1])
 
 m4_define([pipecolors_version], [pipecolors_version_major.pipecolors_version_minor.pipecolors_version_micro])
 
@@ -17,19 +17,21 @@ AC_SUBST([PIPECOLORS_VERSION_MICRO], [pipecolors_version_micro])
 AC_SUBST([PIPECOLORS_VERSION], [pipecolors_version])
 
 PKG_INSTALLDIR
-AC_CONFIG_SRCDIR([libpipecolors.cc])
-AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_SRCDIR([src/libpipecolors.cc])
+AC_CONFIG_HEADERS([src/config.h])
 AC_CONFIG_AUX_DIR([config])
 AC_CANONICAL_TARGET
 AC_CANONICAL_HOST
 AC_CANONICAL_BUILD
 PKG_PROG_PKG_CONFIG
-AM_INIT_AUTOMAKE([gnu dist-bzip2 dist-zip])
 
-AM_SILENT_RULES
-AC_GNU_SOURCE
+AM_INIT_AUTOMAKE([dist-bzip2 dist-zip])
+
+#AC_GNU_SOURCE
+
+# Checks for programs.
 AC_PROG_INSTALL
-AC_PROG_CXXCPP
+AC_PROG_CXX
 AM_PROG_AR
 AC_PROG_LIBTOOL
 AC_PROG_LN_S
@@ -38,14 +40,19 @@ LT_INIT
 AC_LANG_CPLUSPLUS
 AC_PREFIX_DEFAULT([/usr])
 
-# Checks for programs.
-
 AC_CONFIG_MACRO_DIR([m4])
 AC_SUBST([LIBTOOL_DEPS])
 
+# Check for functions
 AC_CHECK_FUNCS([vasprintf], [], [AC_MSG_ERROR([Why don't you have this?  Install basic c++ header files.])])
-AC_CHECK_HEADERS([stdarg.h stdlib.h unistd.h string iostream map],[],[AC_MSG_ERROR([We couldn't find one or more of the required headers.])])
+
+# Check for Headers
+AC_CHECK_HEADERS([cstdio iostream cstring cstdlib cstdarg],[],[AC_MSG_ERROR([We couldn't find one or more of the required headers.])])
+
+# Check for boost_regex header
 AC_CHECK_HEADER([boost/regex.hpp],[],[AC_MSG_ERROR([Please install the libboost-regex header library.])])
+
+# Check that we can use boost_regex.so
 AC_CHECK_LIB([boost_regex], [main], [], [AC_MSG_ERROR([Please install the libboost-regex libs on your system.])])
 
 
@@ -63,13 +70,13 @@ AM_COND_IF([PC_REMOVE_INVALID],
   [AC_MSG_NOTICE([Invalid pipe codes will be filtered.])],
   [AC_MSG_NOTICE([Invalid pipe codes will not be filtered.])])
 
-AC_ARG_ENABLE([the-force],
-	[AC_HELP_STRING([--enable-the-force], [use the force [default=no]])],
-		[], [enable_the_force=no])
-AM_CONDITIONAL([ENABLE_THE_FORCE], [test "x$enable_the_force" = "xyes"])
+#AC_ARG_ENABLE([the-force],
+#	[AC_HELP_STRING([--enable-the-force], [use the force [default=no]])],
+#		[], [enable_the_force=no])
+#AM_CONDITIONAL([ENABLE_THE_FORCE], [test "x$enable_the_force" = "xyes"])
 
 
-AC_CONFIG_FILES([Makefile libpipecolors.pc:libpipecolors.pc.in libpipecolors.h:libpipecolors.h.in],[],[APIVERSION=PIPECOLORS_VERSION])
+AC_CONFIG_FILES([Makefile src/Makefile man/Makefile src/libpipecolors.pc:src/libpipecolors.pc.in src/libpipecolors.h:src/libpipecolors.h.in],[],[APIVERSION=PIPECOLORS_VERSION])
 AC_CONFIG_COMMANDS([timestamp], [date >timestamp])
 AC_OUTPUT
 

@@ -7,4 +7,4 @@ Name: libpipecolors
 Description: Uses old renegade pipe color codes to print colors to the terminal
 Version: @PACKAGE_VERSION@
 Libs: -L${libdir} -lpipecolors
-Cflags: -I${includedir}/pipecolors
+Cflags: -I${includedir}
