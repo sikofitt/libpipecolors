@@ -17,8 +17,8 @@ AC_SUBST([PIPECOLORS_VERSION_MICRO], [pipecolors_version_micro])
 AC_SUBST([PIPECOLORS_VERSION], [pipecolors_version])
 
 PKG_INSTALLDIR
-AC_CONFIG_SRCDIR([libpipecolors.cc])
-AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_SRCDIR([src/libpipecolors.cc])
+AC_CONFIG_HEADERS([src/config.h])
 AC_CONFIG_AUX_DIR([config])
 AC_CANONICAL_TARGET
 AC_CANONICAL_HOST
@@ -69,7 +69,7 @@ AC_ARG_ENABLE([the-force],
 AM_CONDITIONAL([ENABLE_THE_FORCE], [test "x$enable_the_force" = "xyes"])
 
 
-AC_CONFIG_FILES([Makefile libpipecolors.pc:libpipecolors.pc.in libpipecolors.h:libpipecolors.h.in],[],[APIVERSION=PIPECOLORS_VERSION])
+AC_CONFIG_FILES([Makefile src/Makefile man/Makefile src/libpipecolors.pc:src/libpipecolors.pc.in src/libpipecolors.h:src/libpipecolors.h.in],[],[APIVERSION=PIPECOLORS_VERSION])
 AC_CONFIG_COMMANDS([timestamp], [date >timestamp])
 AC_OUTPUT
 
