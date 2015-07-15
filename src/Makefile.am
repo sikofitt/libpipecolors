@@ -1,4 +1,4 @@
-pkgconfig_DATA = libpipecolors.pc
+pkgconfig_DATA = libpipecolors.pc pipecolors.pc
 
 AM_LDFLAGS = $(LDFLAGS)
 
@@ -29,7 +29,11 @@ MAINTAINERCLEANFILES = \
 	config.h.in~ \
 	config.log \
 	stamp-h1 \
-	Makefile.in
+	Makefile.in \
+	pipecolors.pc
 
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ../config.status libtool
+
+pipecolors.pc:
+	cp libpipecolors.pc pipecolors.pc
