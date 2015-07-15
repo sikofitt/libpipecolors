@@ -1,8 +1,6 @@
 .deps
 config
-/AUTHORS
 Makefile
-NEWS
 pipecolors.pc
 tests/test
 Makefile.in
