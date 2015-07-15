@@ -89,6 +89,8 @@ AM_CONDITIONAL([BUILD_WITH_BTREE], [test "x$enable_btree" = "xyes"])
 
 if test "x$enable_btree" == "xyes"; then
 
+  AC_CHECK_CXX_ARGUMENT([-std=c++11])
+
   AC_CHECK_TOOL([MERCURIAL], [hg], [no])
 
   
