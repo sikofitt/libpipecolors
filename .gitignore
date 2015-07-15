@@ -4,7 +4,6 @@ config
 Makefile
 NEWS
 pipecolors.pc
-README
 tests/test
 Makefile.in
 aclocal.m4
