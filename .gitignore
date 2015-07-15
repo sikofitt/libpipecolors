@@ -32,7 +32,7 @@ libpipecolors.lo
 libpipecolors.pc
 tests/
 test/
-timestamp
+/timestamp
 # Ignore backup files
 *~
 libpipecolors.h

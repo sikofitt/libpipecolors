@@ -41,7 +41,8 @@ MAINTAINERCLEANFILES = \
 	-rf config \
 	-rf m4 \
 	configure \
-	Makefile.in
+	Makefile.in \
+	-rf cpp-btree
 
 install-man: install-man3 install-man7 install-man-gzip
 uninstall-man: uninstall-man3 uninstall-man7 uninstall-man-gzip
