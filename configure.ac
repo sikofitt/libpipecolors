@@ -4,19 +4,12 @@
 AC_PREREQ([2.69])
 
 m4_define([pipecolors_version_major],[0])
-m4_define([pipecolors_version_minor],[1])
+m4_define([pipecolors_version_minor],[2])
 m4_define([pipecolors_version_micro],[0])
-m4_define([pipecolors_version_beta], [])
 
-m4_define([pipecolors_version_base], [pipecolors_version_major.pipecolors_version_minor.pipecolors_version_micro])
-m4_define([pipecolors_version],
-	  [ifelse(pipecolors_version_beta, [], [pipecolors_version_base], [pipecolors_version_base.pipecolors_version_beta])])
+m4_define([pipecolors_version], [pipecolors_version_major.pipecolors_version_minor.pipecolors_version_micro])
 
 AC_INIT([pipecolors], [pipecolors_version])
-
-
-AC_SUBST(PIPECOLORS_VERSION_BASE, pipecolors_version_base)
-AC_SUBST(PIPECOLORS_VERSION_BETA, pipecolors_version_beta)
 
 AC_SUBST([PIPECOLORS_VERSION_MAJOR], [pipecolors_version_major])
 AC_SUBST([PIPECOLORS_VERSION_MINOR], [pipecolors_version_minor])
@@ -24,14 +17,14 @@ AC_SUBST([PIPECOLORS_VERSION_MICRO], [pipecolors_version_micro])
 AC_SUBST([PIPECOLORS_VERSION], [pipecolors_version])
 
 PKG_INSTALLDIR
-AC_CONFIG_SRCDIR([libpipecolors.cpp])
+AC_CONFIG_SRCDIR([libpipecolors.cc])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([config])
 AC_CANONICAL_TARGET
 AC_CANONICAL_HOST
 AC_CANONICAL_BUILD
 PKG_PROG_PKG_CONFIG
-AM_INIT_AUTOMAKE([gnu dist-bzip2 dist-zip std-options])
+AM_INIT_AUTOMAKE([gnu dist-bzip2 dist-zip])
 
 AM_SILENT_RULES
 AC_GNU_SOURCE
@@ -50,18 +43,6 @@ AC_PREFIX_DEFAULT([/usr])
 AC_CONFIG_MACRO_DIR([m4])
 AC_SUBST([LIBTOOL_DEPS])
 
-gcc_full_vers=`g++ -dumpversion`
-gcc_major_vers=`echo ${gcc_full_vers} | cut -f1 -d.`
-gcc_minor_vers=`echo ${gcc_full_vers} | cut -f2 -d.`
-gcc_micro_vers=`echo ${gcc_full_vers} | cut -f3 -d.`
-
-
-#AC_MSG_CHECKING([${CXX-c++} version])
-#if test "${gcc_minor_vers}" -lt 9; then
-#  AC_MSG_ERROR([GCC >= 4.9 is required, you have version ${gcc_full_vers}])
-#else
-#  AC_MSG_RESULT([${gcc_full_vers} ... acceptable])
-#fi
 AC_CHECK_FUNCS([vasprintf], [], [AC_MSG_ERROR([Why don't you have this?  Install basic c++ header files.])])
 AC_CHECK_HEADERS([stdarg.h stdlib.h unistd.h string iostream map],[],[AC_MSG_ERROR([We couldn't find one or more of the required headers.])])
 AC_CHECK_HEADER([boost/regex.hpp],[],[AC_MSG_ERROR([Please install the libboost-regex header library.])])
@@ -82,51 +63,6 @@ AM_COND_IF([PC_REMOVE_INVALID],
   [AC_MSG_NOTICE([Invalid pipe codes will be filtered.])],
   [AC_MSG_NOTICE([Invalid pipe codes will not be filtered.])])
 
-AC_ARG_ENABLE([btree],
-	[AC_HELP_STRING([--enable-btree], [enable googles btree instead of stl map [default=no]])],
-		[enable_btree=yes])
-AM_CONDITIONAL([BUILD_WITH_BTREE], [test "x$enable_btree" = "xyes"])
-
-if test "x$enable_btree" == "xyes"; then
-
-  AC_CHECK_CXX_ARGUMENT([-std=c++11])
-
-  AC_CHECK_TOOL([MERCURIAL], [hg], [no])
-
-  
-  if test "x${MERCURIAL}" = "xhg"; then
-    have_hg_bin=1
-  fi
-  
-  AC_MSG_CHECKING([for ${srcdir}/cpp-btree/btree_map.h])
-
-  if test -f ${srcdir}/cpp-btree/btree_map.h; then
-    have_btree_h=1
-    AC_MSG_RESULT([found.])
-  else
-    AC_MSG_RESULT([no])
-  fi
-
-  if test "x$have_btree_h" = "x1"; then
-    AC_VERBOSE([Using already existing btree.])
-    AM_CONDITIONAL([BUILD_WITH_BTREE], [true])
-  elif test "x$have_hg_bin" = "x1"; then
-    AC_VERBOSE([
-    * Downloading btree headers with mercurial
-    ])
-    
-    $(which hg) clone https://code.google.com/p/cpp-btree/
-    AM_CONDITIONAL([BUILD_WITH_BTREE], [true])
-  else
-    AC_VERBOSE([
-    * Could not find hg in your PATH
-    * Building with STL maps instead of Google Btree
-    ])
-    AM_CONDITIONAL([BUILD_WITH_BTREE], [false])
-  fi
-
-fi
-
 AC_ARG_ENABLE([the-force],
 	[AC_HELP_STRING([--enable-the-force], [use the force [default=no]])],
 		[], [enable_the_force=no])
@@ -142,38 +78,30 @@ green=$(tput bold; tput setaf 2)
 blue=$(tput bold; tput setaf 4)
 cyan=$(tput bold; tput setaf 6)
 white=$(tput bold; tput setaf 7)
-
-
-if test "x$disable_pipe_stripping" == "xno" ; then
+under=$(tput smul)
+underoff=$(tput rmul)
 
 cat << EOF
 
- ${reset}
+ ${resetc}
  ${green}* ${white}Prefix ${resetc}: ${cyan}${prefix}
  ${green}* ${white}Exec Prefix ${resetc}: ${cyan}${exec_prefix}
  ${green}* ${white}Library ${resetc}: ${cyan}${libdir}
  ${green}* ${white}Include ${resetc}: ${cyan}${includedir}
  ${green}* ${resetc}Configure finished type '${cyan}make${resetc}' to build and '${cyan}make install${resetc}' to install.
- ${green}* ${resetc}Invalid pipe codes will be filtered
+EOF
+if test "x$disable_pipe_stripping" == "xno" ; then
+cat << EOF
+ ${green}* ${resetc}Invalid pipe codes ${white}${under}will${resetc}${underoff} be filtered.
+EOF
+else
+cat << EOF
+ ${green}* ${resetc}Invalid pipe codes ${white}${under}will not${resetc}${underoff} be filtered.
+EOF
+fi
+cat << EOF
  ${green}* ${resetc}  e.g. ('${white}|41${resetc}Hello World' will show as 'Hello World' instead of '${white}|41${resetc}Hello World')
  ${green}* ${resetc}  You can change this behavior by using the ${white}--disable-pipe-stripping ${resetc}configure flag.
 
 EOF
 
-else
-
-cat << EOF
-
- ${reset}
- ${green}* ${white}Prefix ${resetc}: ${cyan}${prefix}
- ${green}* ${white}Exec Prefix ${resetc}: ${cyan}${exec_prefix}
- ${green}* ${white}Library ${resetc}: ${cyan}${libdir}
- ${green}* ${white}Include ${resetc}: ${cyan}${includedir}
- ${green}* ${resetc}Configure finished type '${cyan}make${resetc}' to build and '${cyan}make install${resetc}' to install.
- ${green}* ${resetc}Invalid pipe codes will not be filtered.
- ${green}* ${resetc}  e.g. ('${white}|41${resetc}Hello World' will show as '${white}|41${resetc}Hello World' instead of 'Hello World')
- ${green}* ${resetc}  You can change this behavior by removing the ${white}--disable-pipe-stripping ${resetc}configure flag.
-
-EOF
-
-fi

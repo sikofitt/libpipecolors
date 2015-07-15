@@ -6,7 +6,7 @@ ACLOCAL_AMFLAGS = -I m4 -I config
 LIBTOOL_DEPS = @LIBTOOL_DEPS@
 
 lib_LTLIBRARIES = libpipecolors.la
-libpipecolors_la_SOURCES = libpipecolors.cpp
+libpipecolors_la_SOURCES = libpipecolors.cc
 libpipecolors_la_LIBS = -lboost_regex
 libpipecolors_la_CFLAGS = -fPIC -DPIC -pthread
 
@@ -14,11 +14,7 @@ if PC_REMOVE_INVALID
 AM_CPPFLAGSINVALID = -DPC_REMOVE_INVALID
 endif
 
-if BUILD_WITH_BTREE
-AM_CPPFLAGSBTREE = -DBUILD_WITH_BTREE -std=c++11
-endif
-
-AM_CPPFLAGS = $(AM_CPPFLAGSBTREE) $(AM_CPPFLAGSINVALID) -std=c++11
+AM_CPPFLAGS = $(AM_CPPFLAGSINVALID)
 
 libpipecolors_la_LDFLAGS = -module \
 	-release ${PIPECOLORS_VERSION}

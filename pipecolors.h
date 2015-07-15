@@ -7,13 +7,13 @@
 
 #ifdef __cplusplus
 namespace pipecolors {
-extern "C" {
+  extern "C" {
 #endif
 
-int pcprintf( const char * format, ... );
-int pcsprintf( char * str, const char * format, ... );
+    int pcprintf( const char * format, ... );
+    int pcsprintf( char * str, const char * format, ... );
 
 #ifdef __cplusplus
-}
+  }
 }
 #endif
