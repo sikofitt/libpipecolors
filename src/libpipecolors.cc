@@ -28,7 +28,7 @@
 #include <cstring>
 #include <cstdlib>
 #include <cstdarg>
-#include <boost/regex.hpp>
+#include <unistd.h>
 #include "pipecolors.h"
 
 namespace pipecolors {
@@ -38,7 +38,7 @@ namespace pipecolors {
     char * buf;
     int sret = asprintf(&buf, "%c%c", code[1], code[2]);
     int pc = atoi( buf );
-    delete buf;
+    delete[] buf;
 
     if(sret == -1) {
       return "failure";
@@ -82,38 +82,47 @@ namespace pipecolors {
     return isatty(fileno(stdout));
   }
 
-  std::pair<std::string,int> replace_colors( std::string s) {
+  void removePipe(std::pair<std::string,std::string> &str, std::string pipe) {
 
-    using namespace boost;
+    size_t index = 0;
 
-    regex re( "(\\|\\d\\d)" );
-    match_results<std::string::const_iterator> match;
-    match_flag_type flags = boost::match_default;
+    while( ( index = str.first.find(pipe, index) ) != std::string::npos ) {
 
-    std::string::const_iterator start, end;
-    start = s.begin();
-    end = s.end();
-    std::string len(s);
+      str.second.erase(str.second.find(pipe), pipe.length());
 
-    while(regex_search(start, end, match, re, flags))
-    {
+      if(ansi(pipe) == "nocode" && PC_REMOVE_INVALID == false) goto skip;
 
-      if(ansi(match[0].str()) == "nocode" && PC_REMOVE_INVALID == false) goto skip;
-
-        len.erase(len.find(match[0]), match[0].length());
-
-      if(has_colors() && ansi(match[0].str()) != "nocode") {
-          s.replace(s.find(match[0]), match[0].length(), ansi(match[0].str()) );
+      if(has_colors() && ansi(pipe) != "nocode") {
+        str.first.replace(index, pipe.length(), ansi(pipe) );
       } else {
-        s.erase(s.find(match[0]), match[0].length());
+        str.first.erase(index, pipe.length());
       }
 
       skip:;
-      start = match[0].second;
-      flags |= boost::match_prev_avail | boost::match_not_bob;
+      index += std::string::npos;
     }
 
-    return std::make_pair(s, len.length());
+  }
+
+  std::pair<std::string,int> replace_colors( std::string s ) {
+
+    char pcodes[99][4] = {};
+    std::pair <std::string,std::string> str = std::make_pair(s,s);
+    char * buf;
+
+    for(int c = 0; c<=99; c++) {
+      int len = ( c < 10 ? asprintf(&buf, "%c0%d", '|', c) : asprintf(&buf, "%c%d", '|', c) );
+      strcpy(pcodes[c], buf);
+    }
+
+    for(int i=0; i<=99; i++) {
+      removePipe(str, pcodes[i]);
+    }
+
+    std::pair <std::string,int> result = std::make_pair(str.first,str.second.length());
+    delete[] buf;
+
+    return result;
 
   }
 
@@ -121,21 +130,20 @@ namespace pipecolors {
   {
     char * buffer;
     va_list args;
-    int ret;
     std::pair<std::string, int> result;
 
     va_start(args, format);
-    ret = vasprintf(&buffer, format, args);
+    int ret = vasprintf(&buffer, format, args);
     va_end(args);
     if(ret == -1) {
-        free(buffer);
-        exit(EXIT_FAILURE);
+      delete[] buffer;
+      exit(EXIT_FAILURE);
     }
 
     std::string s(buffer);
-    free(buffer);
+    delete[] buffer;
 
-     result = replace_colors(s);
+    result = replace_colors(s);
 
     printf("%s", result.first.c_str());
 
@@ -146,24 +154,27 @@ namespace pipecolors {
 
   int pcsprintf( char * str, const char * format, ... ) {
 
-    int ret;
     char** str1 = (char**)str;
     va_list args;
 
     va_start(args, format);
-    ret = vasprintf(str1, format, args);
+    int ret = vasprintf(str1, format, args);
     va_end(args);
 
     if(ret == -1) {
-        free(str1);
+        delete[] str1;
         exit(EXIT_FAILURE);
     }
 
     std::string s(*str1);
-    free(*str1);
+    delete[] *str1;
+
     std::pair<std::string, int> result = replace_colors(s);
+
     const char * s2 = (const char *)result.first.c_str();
+
     strcpy(str, s2);
+
     return result.second;
   }
 } // namespace

@@ -7,7 +7,7 @@ LIBTOOL_DEPS = @LIBTOOL_DEPS@
 
 lib_LTLIBRARIES = libpipecolors.la
 libpipecolors_la_SOURCES = libpipecolors.cc
-libpipecolors_la_LIBS = -lboost_regex
+#libpipecolors_la_LIBS = -lboost_regex
 libpipecolors_la_CFLAGS = -fPIC -DPIC -pthread
 
 if PC_REMOVE_INVALID

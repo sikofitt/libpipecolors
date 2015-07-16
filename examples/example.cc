@@ -1,9 +1,11 @@
-#include <stdio.h>
-#include <unistd.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <iostream>
 #include <pipecolors.h>
 
-int main() {
+
+using namespace pipecolors;
+using namespace std;
+int main(void) {
 
   char buffer[100];
   int num = 5;
