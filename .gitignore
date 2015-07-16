@@ -19,6 +19,11 @@ stamp-h1
 libpipecolors.pc
 tests/
 test/
+src/libpipecolors-boost.cc
+src/libpipecolors.la
+src/libpipecolors.lo
+src/libpipecolors.o
+
 /timestamp
 # Ignore backup files
 *~

@@ -10,7 +10,7 @@ int pcsprintf(char * str, const char * format, ...);
 ```
 ### To Do
 - [x] Remove std::map requirement
-- [ ] Remove boost requirement without forcing `-std=c++11`
+- [x] Remove boost requirement without forcing `-std=c++11` (Reduced size from 1.2M to 87K)
 
 ## Example use
 
