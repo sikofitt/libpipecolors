@@ -64,6 +64,15 @@ AM_COND_IF([PC_REMOVE_INVALID],
   [AC_MSG_NOTICE([Invalid pipe codes will be filtered.])],
   [AC_MSG_NOTICE([Invalid pipe codes will not be filtered.])])
 
+AC_ARG_ENABLE([debug],
+  [AC_HELP_STRING([--enable-debug], [enable debuging [default=no]])],
+    [], [enable_debug=no])
+  AM_CONDITIONAL([PC_DEBUG], [test "x$enable_debug" = "xno"])
+
+AM_COND_IF([PC_DEBUG],
+  [],
+  [AC_MSG_NOTICE([Debugging enabled.])])
+
 AC_CONFIG_FILES([Makefile src/Makefile man/Makefile src/libpipecolors.pc:src/libpipecolors.pc.in src/libpipecolors.h:src/libpipecolors.h.in],[],[APIVERSION=PIPECOLORS_VERSION])
 AC_CONFIG_COMMANDS([timestamp], [date >timestamp])
 AC_OUTPUT
