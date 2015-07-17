@@ -7,14 +7,15 @@ LIBTOOL_DEPS = @LIBTOOL_DEPS@
 
 lib_LTLIBRARIES = libpipecolors.la
 libpipecolors_la_SOURCES = libpipecolors.cc
-#libpipecolors_la_LIBS = -lboost_regex
 libpipecolors_la_CFLAGS = -fPIC -DPIC -pthread
 
 if PC_REMOVE_INVALID
 AM_CPPFLAGSINVALID = -DPC_REMOVE_INVALID
 endif
-
-AM_CPPFLAGS = $(AM_CPPFLAGSINVALID)
+if PC_DEBUG
+AM_CPPFLAGSDEBUG = -DPC_DEBUG
+endif
+AM_CPPFLAGS = $(AM_CPPFLAGSINVALID) $(AM_CPPFLAGSDEBUG)
 
 libpipecolors_la_LDFLAGS = -module \
 	-release ${PIPECOLORS_VERSION}

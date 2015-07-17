@@ -1,3 +1,7 @@
-2015-07-16  R. Eric Wheeler  <eric@rewiv.com> Version 1.2.0
+2015-07-16  R. Eric Wheeler <eric@rewiv.com> Version 1.2.0
 
  * Initial Release
+
+2015-07-17 R. Eric Wheeler <eric@rewiv.com> Version 1.2.1
+
+ * Fixed std::out_of_range error when --disable-pipe-stripping is enabled

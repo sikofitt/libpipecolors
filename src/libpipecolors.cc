@@ -22,6 +22,9 @@
 #ifndef PC_REMOVE_INVALID
 #define PC_REMOVE_INVALID false
 #endif
+#ifndef PC_DEBUG
+#define PC_DEBUG false
+#endif
 
 #include <cstdio>
 #include <iostream>
@@ -30,6 +33,7 @@
 #include <cstdarg>
 #include <unistd.h>
 #include "pipecolors.h"
+
 
 namespace pipecolors {
 
@@ -85,23 +89,26 @@ namespace pipecolors {
   void removePipe(std::pair<std::string,std::string> &str, std::string pipe) {
 
     size_t index = 0;
-
+    int strlen = 0;
     while( ( index = str.first.find(pipe, index) ) != std::string::npos ) {
 
       str.second.erase(str.second.find(pipe), pipe.length());
 
-      if(ansi(pipe) == "nocode" && PC_REMOVE_INVALID == false) goto skip;
+      if(ansi(pipe) == "nocode" && PC_REMOVE_INVALID == false) strlen += 3;
+
 
       if(has_colors() && ansi(pipe) != "nocode") {
         str.first.replace(index, pipe.length(), ansi(pipe) );
-      } else {
+      } else if(has_colors() && ansi(pipe) == "nocode" && PC_REMOVE_INVALID == true) {
         str.first.erase(index, pipe.length());
+      } else {
+        index += 3;
+        goto skip;
       }
-
       skip:;
       index += std::string::npos;
     }
-
+    if(strlen > 0) str.second.insert(str.second.end(), strlen, '\0');
   }
 
   std::pair<std::string,int> replace_colors( std::string s ) {
