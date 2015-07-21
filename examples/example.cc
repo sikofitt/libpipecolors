@@ -1,10 +1,11 @@
-#include <cstdio>
-#include <iostream>
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
 #include <pipecolors.h>
-
 
 using namespace pipecolors;
 using namespace std;
+
 int main(void) {
 
   char buffer[100];
@@ -23,5 +24,5 @@ int main(void) {
   pcprintf("\t|02Length of |15pcsprintf |02is : |10|30%d|39 : We count escape characters just like sprintf\n\n", len2);
 
   return 0;
-
+  
 }
