@@ -1,7 +1,7 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.69])
+AC_PREREQ([2.50])
 
 m4_define([pipecolors_version_major],[1])
 m4_define([pipecolors_version_minor],[2])
