@@ -1,0 +1,16 @@
+language: cpp
+
+compiler:
+  - gcc
+  - clang
+
+branches:
+  only:
+    - master
+    - testing
+
+notifications:
+  email: true
+
+os:
+  - linux
