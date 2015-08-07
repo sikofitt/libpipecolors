@@ -6,7 +6,7 @@ compiler:
 before_install:
   - ./autogen.sh
 
-script: ./configure && make && make install
+script: ./configure && make
 
 branches:
   only:
