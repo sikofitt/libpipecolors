@@ -39,3 +39,6 @@ libtool: $(LIBTOOL_DEPS)
 
 pipecolors.pc:
 	cp libpipecolors.pc pipecolors.pc
+
+test:
+	echo 0

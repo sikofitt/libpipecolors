@@ -13,3 +13,6 @@ MAINTAINERCLEANFILES = \
 	-rf m4 \
 	configure \
 	Makefile.in
+
+test:
+	echo 0
