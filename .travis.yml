@@ -3,6 +3,9 @@ language: cpp
 compiler:
   - gcc
 
+before_install:
+  - ./autogen.sh
+
 branches:
   only:
     - master

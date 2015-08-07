@@ -16,7 +16,7 @@ AC_SUBST([PIPECOLORS_VERSION_MINOR], [pipecolors_version_minor])
 AC_SUBST([PIPECOLORS_VERSION_PATCH], [pipecolors_version_patch])
 AC_SUBST([PIPECOLORS_VERSION], [pipecolors_version])
 
-PKG_INSTALLDIR
+#PKG_INSTALLDIR
 AC_CONFIG_SRCDIR([src/libpipecolors.cc])
 AC_CONFIG_HEADERS([src/config.h])
 AC_CONFIG_AUX_DIR([config])
