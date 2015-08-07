@@ -1,3 +1,4 @@
+pkgconfigdir=/usr/lib/pkgconfig
 pkgconfig_DATA = libpipecolors.pc pipecolors.pc
 
 AM_LDFLAGS = $(LDFLAGS)
