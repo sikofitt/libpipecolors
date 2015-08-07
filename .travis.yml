@@ -2,7 +2,6 @@ language: cpp
 
 compiler:
   - gcc
-  - clang
 
 before_install:
   - sudo apt-get update && sudo apt-get install -y pkg-config
@@ -11,10 +10,9 @@ before_install:
 branches:
   only:
     - master
-    - testing
 
 notifications:
-  email: true
+  email: false
 
 os:
   - linux
