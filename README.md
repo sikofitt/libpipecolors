@@ -1,5 +1,5 @@
 # libpipecolors
-
+[![Build Status](https://travis-ci.org/sk-5/libpipecolors.svg?branch=master)](https://travis-ci.org/sk-5/libpipecolors)
 
 This library parses input like **_printf_** and **_sprintf_** but instead of returning a boring string it will replace renegade bbs style    pipecodes (|09) with their ansi equivelent.
  
