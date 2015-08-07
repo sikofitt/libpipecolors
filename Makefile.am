@@ -14,5 +14,3 @@ MAINTAINERCLEANFILES = \
 	configure \
 	Makefile.in
 
-test:
-	echo 0
